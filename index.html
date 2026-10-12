@@ -415,6 +415,13 @@
     padding: 28px 12px 0;
     text-align: center;
     isolation: isolate;
+    transition: filter 0.18s ease;
+  }
+  .card:not(.is-owned) .thumb {
+    filter: grayscale(0.55) saturate(0.6);
+  }
+  .card.is-owned .thumb {
+    filter: none;
   }
   .thumb img {
     position: relative;
