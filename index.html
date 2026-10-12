@@ -3,21 +3,22 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>EN Base Set Unlimited — Cheat Sheet (full scroll)</title>
+<title>Base Set Unlimited · Card List</title>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <style>
   :root {
-    --bg: #faf7f2;
-    --card: #ffffff;
-    --border: #e4ddd3;
-    --text: #1a2332;
-    --muted: #5a6a80;
-    --a: #0a8f4d;
-    --b: #1565c0;
-    --psa: #b36b00;
-    --accent: #c49a2a;
-    --link: #0b57d0;
-    --check-bg: #f4f0ea;
+    --bg: #f6f7f9;
+    --card: #fff;
+    --border: #e4e7ec;
+    --text: #1a1d21;
+    --muted: #5c6570;
+    --a: #1b7f4a;
+    --b: #2563eb;
+    --psa: #9a6b00;
+    --accent: #c9a227;
+    --link: #2563eb;
+    --check-bg: #fafbfc;
+    --shadow: 0 1px 2px rgba(16, 24, 40, 0.06), 0 1px 3px rgba(16, 24, 40, 0.08);
     --cols: 4;
     --nav-h: 56px;
     --gold: #c9a227;
@@ -44,18 +45,20 @@
     padding: 0 0 48px;
     background: var(--bg);
     color: var(--text);
-    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
   }
 
   .site-chrome {
     position: sticky;
     top: 0;
     z-index: 50;
-    background: rgba(255, 252, 248, 0.96);
+    background: rgba(255, 255, 255, 0.96);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid #eee6da;
-    box-shadow: 0 1px 0 rgba(255,255,255,0.7);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.06);
   }
   .site-nav {
     position: static;
@@ -96,18 +99,18 @@
     white-space: nowrap;
   }
   .site-links a {
-    color: #6b7280;
+    color: var(--muted);
     text-decoration: none;
     padding: 4px 2px 6px;
     border-bottom: 2px solid transparent;
   }
-  .site-links a:hover { color: #111827; }
+  .site-links a:hover { color: var(--text); }
   .site-links a.is-active,
   .site-links a[aria-current="page"] {
-    color: #111827;
-    border-bottom-color: #111827;
+    color: var(--text);
+    border-bottom-color: var(--text);
   }
-  .site-links .sep { color: #d4d0c8; font-weight: 500; user-select: none; }
+  .site-links .sep { color: var(--border); font-weight: 500; user-select: none; }
   .nav-density {
     display: inline-flex;
     align-items: center;
@@ -118,7 +121,7 @@
   .nav-density .label {
     font-size: 12px;
     font-weight: 700;
-    color: #6b7280;
+    color: var(--muted);
     letter-spacing: 0.02em;
   }
   .nav-density .hint {
@@ -147,11 +150,11 @@
     cursor: pointer;
   }
   .seg button.active {
-    background: #f3eee6;
-    color: #111827;
+    background: #eef2f6;
+    color: var(--text);
     box-shadow: none;
   }
-  .seg button:hover { color: #111827; }
+  .seg button:hover { color: var(--text); }
 
   .wrap { max-width: 1400px; margin: 0 auto; padding: 22px 16px 0; }
   header {
@@ -165,21 +168,21 @@
   }
   h1 {
     margin: 0;
-    font-size: clamp(22px, 4vw, 30px);
+    font-size: clamp(1.15rem, 3vw, 1.45rem);
     letter-spacing: -0.02em;
-    color: #171717;
-    font-weight: 750;
+    color: var(--text);
+    font-weight: 700;
   }
   .sub {
     margin-top: 6px;
-    font-size: 13px;
+    font-size: 0.78rem;
     color: var(--muted);
     font-weight: 600;
   }
   .badge {
-    background: #fff8e6;
-    color: #8a6200;
-    border: 1.5px solid var(--accent);
+    background: #fff6e0;
+    color: #9a6b00;
+    border: 1px solid var(--border);
     padding: 7px 12px;
     font-weight: 800;
     font-size: 12px;
@@ -211,7 +214,7 @@
     color: var(--text);
   }
   #nameSearch:focus {
-    outline: 2px solid var(--gold);
+    outline: 2px solid var(--link);
     outline-offset: 1px;
   }
   .legend {
@@ -245,11 +248,11 @@
     line-height: 1.2;
     font-family: inherit;
   }
-  .chip:hover { color: #111827; border-color: #cfc6b8; }
+  .chip:hover { color: var(--text); border-color: #c5cbd3; }
   .chip.is-on {
-    color: #111827;
-    border-color: #111827;
-    background: #f3eee6;
+    color: var(--text);
+    border-color: var(--text);
+    background: #eef2f6;
   }
   .chip[data-rarity-group="holo"].is-on {
     border-color: var(--gold);
@@ -310,41 +313,70 @@
   .card {
     position: relative;
     background: var(--card);
-    border: 1.5px solid var(--gray-edge);
-    border-radius: 18px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 8px 22px rgba(28, 22, 16, 0.07);
+    box-shadow: var(--shadow);
     min-width: 0;
   }
   .card[data-rarity="rare"] {
     border-color: var(--silver-soft);
-    box-shadow: 0 8px 22px rgba(28, 22, 16, 0.07), 0 0 0 1px rgba(154, 163, 173, 0.18);
+    box-shadow: var(--shadow), 0 0 0 1px rgba(154, 163, 173, 0.18);
   }
   .card[data-rarity="holo"] {
     overflow: visible;
     border-color: var(--gold);
     box-shadow:
-      0 10px 26px rgba(28, 22, 16, 0.08),
+      var(--shadow),
       0 0 0 1px rgba(201, 162, 39, 0.22);
   }
   .card.is-owned {
     box-shadow:
-      0 8px 22px rgba(28, 22, 16, 0.07),
-      inset 0 0 0 2px rgba(34, 197, 94, 0.38);
+      var(--shadow),
+      0 0 0 2px rgba(34, 197, 94, 0.18),
+      0 0 10px rgba(34, 197, 94, 0.4),
+      0 0 22px rgba(22, 163, 74, 0.22);
   }
   .card[data-rarity="holo"].is-owned {
     box-shadow:
-      0 10px 26px rgba(28, 22, 16, 0.08),
+      var(--shadow),
       0 0 0 1px rgba(201, 162, 39, 0.22),
-      inset 0 0 0 2px rgba(34, 197, 94, 0.38);
+      0 0 0 2px rgba(34, 197, 94, 0.16),
+      0 0 10px rgba(34, 197, 94, 0.4),
+      0 0 22px rgba(22, 163, 74, 0.22);
   }
   .card[data-rarity="rare"].is-owned {
     box-shadow:
-      0 8px 22px rgba(28, 22, 16, 0.07),
+      var(--shadow),
       0 0 0 1px rgba(154, 163, 173, 0.18),
-      inset 0 0 0 2px rgba(34, 197, 94, 0.38);
+      0 0 0 2px rgba(34, 197, 94, 0.16),
+      0 0 10px rgba(34, 197, 94, 0.4),
+      0 0 22px rgba(22, 163, 74, 0.22);
+  }
+  .card.is-owned::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1.5px;
+    pointer-events: none;
+    z-index: 4;
+    background: linear-gradient(
+      160deg,
+      rgba(187, 247, 208, 0.7),
+      rgba(74, 222, 128, 0.28) 48%,
+      rgba(22, 163, 74, 0.5)
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask-composite: exclude;
   }
 
   .rarity-mark {
@@ -383,6 +415,13 @@
     padding: 28px 12px 0;
     text-align: center;
     isolation: isolate;
+    transition: filter 0.18s ease;
+  }
+  .card:not(.is-owned) .thumb {
+    filter: grayscale(0.55) saturate(0.6);
+  }
+  .card.is-owned .thumb {
+    filter: none;
   }
   .thumb img {
     position: relative;
@@ -430,9 +469,9 @@
   }
   .name {
     font-size: 15px;
-    font-weight: 800;
+    font-weight: 700;
     line-height: 1.15;
-    color: #111827;
+    color: var(--text);
     overflow-wrap: break-word;
     word-break: normal;
   }
@@ -463,19 +502,19 @@
     flex-shrink: 0;
     font-size: 12px;
     font-weight: 800;
-    color: #16a34a;
+    color: var(--a);
   }
   .owned input {
     width: 16px;
     height: 16px;
     margin: 0;
-    accent-color: #16a34a;
+    accent-color: var(--a);
     cursor: pointer;
     flex-shrink: 0;
   }
   .owned-word {
     display: none;
-    color: #16a34a;
+    color: var(--a);
     letter-spacing: 0.01em;
   }
   .owned input:checked + .owned-word { display: inline; }
@@ -508,8 +547,8 @@
     text-decoration: none;
     font-size: 11px;
     font-weight: 800;
-    border: 1px solid #c5d4f0;
-    background: #eef4ff;
+    border: 1px solid #bfd0f5;
+    background: #eef3ff;
     padding: 2px 6px;
     border-radius: 4px;
   }
@@ -564,7 +603,7 @@
     .nav-density .seg button[data-cols="3"],
     .nav-density .seg button[data-cols="4"],
     .nav-density .seg button[data-cols="5"] { display: none; }
-    .card { border-radius: 14px; }
+    .card { border-radius: 12px; }
     .thumb { padding: 24px 8px 0; }
     .card[data-rarity="holo"] .thumb { padding: 24px 12px 4px; }
     .meta { padding: 8px 8px 10px; }
@@ -628,8 +667,8 @@
   <div class="wrap" id="top">
   <header>
     <div>
-      <h1>EN Base Set Unlimited</h1>
-      <div class="sub">Full cheat sheet · 102 cards · one-page scroll · FX USD×7.85 · 2026-10-12</div>
+      <h1>Base Set Unlimited · Card List</h1>
+      <div class="sub">102 cards · one-page scroll · FX USD×7.85 · 2026-10-12</div>
     </div>
     <div class="badge">FULL 102 · LIGHT · SCROLL</div>
   </header>

@@ -1,4 +1,4 @@
-# Base Set Unlimited Cheat Sheet
+# Base Set Unlimited Card List
 
 One-page scroll gallery of all **102** English Pokémon Base Set Unlimited cards.
 
