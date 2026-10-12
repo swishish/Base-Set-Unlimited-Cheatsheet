@@ -225,6 +225,7 @@
     box-shadow: 0 8px 22px rgba(28, 22, 16, 0.07), 0 0 0 1px rgba(154, 163, 173, 0.18);
   }
   .card[data-rarity="holo"] {
+    overflow: visible;
     border-color: var(--gold);
     box-shadow:
       0 10px 26px rgba(28, 22, 16, 0.08),
@@ -298,23 +299,26 @@
   .card[data-rarity="rare"] .thumb img {
     box-shadow: 0 0 0 1.5px var(--silver), 0 6px 16px rgba(16, 24, 40, 0.08);
   }
+  .card[data-rarity="holo"] .thumb {
+    padding: 28px 16px 6px;
+  }
   .card[data-rarity="holo"] .thumb::before {
     content: "";
     position: absolute;
-    inset: 18px 8px 2px;
-    border-radius: 16px;
+    inset: 14px 2px -4px;
+    border-radius: 20px;
     background:
-      radial-gradient(ellipse 75% 65% at 28% 22%, rgba(150, 190, 255, 0.55), transparent 58%),
-      radial-gradient(ellipse 70% 60% at 82% 78%, rgba(186, 140, 255, 0.42), transparent 55%),
-      radial-gradient(ellipse 50% 40% at 50% 48%, rgba(255, 220, 150, 0.28), transparent 62%);
-    filter: blur(12px);
+      radial-gradient(ellipse 80% 70% at 22% 18%, rgba(140, 190, 255, 0.72), transparent 56%),
+      radial-gradient(ellipse 75% 65% at 84% 82%, rgba(190, 130, 255, 0.58), transparent 52%),
+      radial-gradient(ellipse 55% 45% at 50% 50%, rgba(255, 214, 130, 0.38), transparent 60%);
+    filter: blur(14px);
     z-index: 0;
     pointer-events: none;
   }
   .card[data-rarity="holo"] .thumb img {
     box-shadow:
       0 0 0 2px var(--gold-soft),
-      0 0 18px rgba(120, 150, 255, 0.28),
+      0 0 22px rgba(120, 150, 255, 0.38),
       0 8px 20px rgba(80, 50, 10, 0.12);
   }
 
@@ -462,8 +466,10 @@
     .grid { gap: 10px; }
     .card { border-radius: 14px; }
     .thumb { padding: 24px 8px 0; }
+    .card[data-rarity="holo"] .thumb { padding: 24px 12px 4px; }
     .meta { padding: 8px 8px 10px; }
     header { margin-bottom: 10px; }
+    .badge { display: none; }
   }
 </style>
 </head>
