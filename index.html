@@ -335,22 +335,46 @@
   .card.is-owned {
     box-shadow:
       var(--shadow),
-      0 0 0 4px rgba(34, 197, 94, 0.7),
-      inset 0 0 0 5px rgba(34, 197, 94, 0.78);
+      0 0 0 1px rgba(27, 127, 74, 0.28),
+      0 0 12px rgba(34, 197, 94, 0.28),
+      0 0 22px rgba(22, 163, 74, 0.14);
   }
   .card[data-rarity="holo"].is-owned {
     box-shadow:
       var(--shadow),
       0 0 0 1px rgba(201, 162, 39, 0.22),
-      0 0 0 4px rgba(34, 197, 94, 0.7),
-      inset 0 0 0 5px rgba(34, 197, 94, 0.78);
+      0 0 12px rgba(34, 197, 94, 0.28),
+      0 0 22px rgba(22, 163, 74, 0.14);
   }
   .card[data-rarity="rare"].is-owned {
     box-shadow:
       var(--shadow),
       0 0 0 1px rgba(154, 163, 173, 0.18),
-      0 0 0 4px rgba(34, 197, 94, 0.7),
-      inset 0 0 0 5px rgba(34, 197, 94, 0.78);
+      0 0 12px rgba(34, 197, 94, 0.28),
+      0 0 22px rgba(22, 163, 74, 0.14);
+  }
+  .card.is-owned::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 2px;
+    pointer-events: none;
+    z-index: 4;
+    background: linear-gradient(
+      160deg,
+      rgba(187, 247, 208, 0.92),
+      rgba(74, 222, 128, 0.42) 42%,
+      rgba(22, 163, 74, 0.72)
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask-composite: exclude;
   }
 
   .rarity-mark {
