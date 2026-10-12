@@ -433,7 +433,8 @@
     font-weight: 800;
     line-height: 1.15;
     color: #111827;
-    overflow-wrap: anywhere;
+    overflow-wrap: break-word;
+    word-break: normal;
   }
   .num {
     color: var(--accent);
@@ -556,7 +557,13 @@
     .chip { font-size: 11px; padding: 3px 7px; }
     .legend-keys { font-size: 11px; }
     .prices .val.a, .prices .val.b { font-size: 12.5px; }
-    .grid { gap: 10px; }
+    .grid {
+      gap: 10px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .nav-density .seg button[data-cols="3"],
+    .nav-density .seg button[data-cols="4"],
+    .nav-density .seg button[data-cols="5"] { display: none; }
     .card { border-radius: 14px; }
     .thumb { padding: 24px 8px 0; }
     .card[data-rarity="holo"] .thumb { padding: 24px 12px 4px; }
@@ -3306,9 +3313,15 @@
   var selectedRarities = {};
   var currentCols = 4;
 
+  function viewportMaxCols() {
+    return window.matchMedia('(max-width: 520px)').matches ? 2 : 5;
+  }
+
   function clampCols(n) {
     n = parseInt(n, 10);
-    if ([2,3,4,5].indexOf(n) === -1) return 4;
+    if ([2,3,4,5].indexOf(n) === -1) n = 4;
+    var max = viewportMaxCols();
+    if (n > max) n = max;
     return n;
   }
 
@@ -3388,6 +3401,12 @@
     applyCols(window.matchMedia('(max-width: 520px)').matches ? 2 : 4);
   } else {
     applyCols(savedCols);
+  }
+  if (window.matchMedia) {
+    var narrowMq = window.matchMedia('(max-width: 520px)');
+    var onNarrow = function () { applyCols(currentCols); };
+    if (narrowMq.addEventListener) narrowMq.addEventListener('change', onNarrow);
+    else if (narrowMq.addListener) narrowMq.addListener(onNarrow);
   }
 
   seg.addEventListener('click', function (ev) {
