@@ -179,6 +179,16 @@
     color: var(--muted);
     font-weight: 600;
   }
+  header > div:first-child { min-width: 0; flex: 1 1 auto; }
+  .header-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px 10px;
+    flex-wrap: wrap;
+    flex-shrink: 0;
+    min-width: 0;
+  }
   .badge {
     background: #fff6e0;
     color: #9a6b00;
@@ -189,6 +199,42 @@
     border-radius: 999px;
     white-space: nowrap;
   }
+  .binder-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+    padding: 6px 10px;
+    border: 1.5px solid var(--border);
+    border-radius: 999px;
+    background: #fff;
+    font-size: 12px;
+    font-weight: 750;
+    font-family: inherit;
+    color: var(--muted);
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+    line-height: 1.2;
+  }
+  .binder-toggle:hover { color: var(--text); border-color: #c5cbd3; }
+  body.binder-view .binder-toggle {
+    color: var(--text);
+    border-color: var(--text);
+    background: #eef2f6;
+  }
+  .binder-toggle input {
+    width: 15px;
+    height: 15px;
+    margin: 0;
+    accent-color: var(--text);
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  body.binder-view .card .meta { display: none; }
+  body.binder-view .thumb { padding-bottom: 12px; }
+  body.binder-view .card[data-rarity="holo"] .thumb { padding-bottom: 12px; }
+  body.binder-view .grid { gap: 14px; }
   .toolbar {
     max-width: 1400px;
     margin: 0 auto;
@@ -607,8 +653,12 @@
     .thumb { padding: 24px 8px 0; }
     .card[data-rarity="holo"] .thumb { padding: 24px 12px 4px; }
     .meta { padding: 8px 8px 10px; }
-    header { margin-bottom: 10px; }
+    header { margin-bottom: 10px; align-items: flex-start; }
+    .header-actions { margin-left: auto; }
     .badge { display: none; }
+    body.binder-view .grid { gap: 8px; }
+    body.binder-view .thumb { padding: 20px 8px 10px; }
+    body.binder-view .card[data-rarity="holo"] .thumb { padding: 20px 10px 10px; }
   }
 </style>
 </head>
@@ -670,7 +720,13 @@
       <h1>Base Set Unlimited · Card List</h1>
       <div class="sub">102 cards · one-page scroll · FX USD×7.85 · 2026-10-12</div>
     </div>
-    <div class="badge">FULL 102 · LIGHT · SCROLL</div>
+    <div class="header-actions">
+      <label class="binder-toggle" for="binderToggle" title="Show card images only">
+        <input type="checkbox" id="binderToggle" aria-label="Binder view" />
+        <span>Binder view</span>
+      </label>
+      <div class="badge">FULL 102 · LIGHT · SCROLL</div>
+    </div>
   </header>
 
   <p class="empty-msg" id="emptyMsg" hidden>No cards match that name / rarity.</p>
@@ -3331,7 +3387,7 @@
   <footer>
     SCOPE: English Base Set Unlimited only (no 1st Edition stamp / not Shadowless). Full set 102 incl. Energy.<br/>
     A = TCGPlayer Near Mint market. B = real LP comps when available (else —). PSA 10 = PriceCharting (or pokemonpricing Aug-2026 fill for thin PC pages).<br/>
-    FX USD × 7.85 → HKD. Snapshot 2026-10-12. Grid size + Owned boxes persist in this browser (localStorage). Name search and rarity chips filter the grid in place. Self-contained HTML (embedded thumbs).
+    FX USD × 7.85 → HKD. Snapshot 2026-10-12. Grid size, Owned boxes, and Binder view persist in this browser (localStorage). Name search and rarity chips filter the grid in place. Self-contained HTML (embedded thumbs).
   </footer>
   </div>
 
@@ -3341,6 +3397,7 @@
 (function () {
   var COL_KEY = 'bsu_cheat_cols';
   var OWN_KEY = 'bsu_cheat_owned';
+  var BINDER_KEY = 'bsu_cheat_binder';
   var COMMON_GROUP = { common: 1, uncommon: 1, energy: 1 };
   var root = document.documentElement;
   var grid = document.getElementById('grid');
@@ -3503,6 +3560,25 @@
   document.addEventListener('keydown', function (ev) {
     if (ev.key === 'Escape' && lb.classList.contains('is-open')) closeLb();
   });
+
+  var binderToggle = document.getElementById('binderToggle');
+  function applyBinder(on) {
+    on = !!on;
+    document.body.classList.toggle('binder-view', on);
+    if (binderToggle) {
+      binderToggle.checked = on;
+      binderToggle.setAttribute('aria-pressed', on ? 'true' : 'false');
+    }
+    try { localStorage.setItem(BINDER_KEY, on ? '1' : '0'); } catch (e) {}
+  }
+  var savedBinder = null;
+  try { savedBinder = localStorage.getItem(BINDER_KEY); } catch (e) {}
+  applyBinder(savedBinder === '1' || savedBinder === 'true');
+  if (binderToggle) {
+    binderToggle.addEventListener('change', function () {
+      applyBinder(binderToggle.checked);
+    });
+  }
 })();
 </script>
 </body>
