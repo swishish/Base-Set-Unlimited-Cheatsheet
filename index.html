@@ -454,12 +454,14 @@
     box-shadow: 0 16px 48px rgba(0,0,0,0.35);
   }
 
+  @media (max-width: 720px) {
+    .nav-density { width: 100%; justify-content: flex-end; margin-left: 0; }
+    .nav-density .hint { display: none; }
+  }
   @media (max-width: 520px) {
     .wrap { padding: 14px 10px 0; }
     .site-nav-inner { padding: 8px 10px; gap: 8px 12px; }
     .site-links { font-size: 12.5px; gap: 8px; }
-    .nav-density { width: 100%; justify-content: flex-end; margin-left: 0; }
-    .nav-density .hint { display: none; }
     .name { font-size: 13.5px; }
     .row { font-size: 11.5px; padding: 4px 6px; }
     .row.a .val, .row.b .val { font-size: 12.5px; }
