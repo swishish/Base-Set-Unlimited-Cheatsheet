@@ -349,6 +349,7 @@
     font-family: inherit;
     box-shadow: var(--shadow-xs);
   }
+  .chip-short { display: none; }
   .chip:hover { color: var(--text); background: #fffdf6; }
   .chip.is-on {
     color: var(--ink);
@@ -409,6 +410,7 @@
     display: grid;
     grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
     gap: 18px;
+    padding: 2px 2px 8px;
   }
   .card {
     position: relative;
@@ -691,7 +693,9 @@
     .toolbar { padding: 0 10px 8px; }
     #nameSearch { max-width: none; }
     .chip { font-size: 11px; padding: 3px 7px; }
-    .legend-keys { font-size: 11px; }
+    .chip-long { display: none; }
+    .chip-short { display: inline; }
+    .legend-keys { display: none; }
     .prices .val.a, .prices .val.b { font-size: 12.5px; }
     .grid {
       gap: 12px;
@@ -739,13 +743,13 @@
       <input type="search" id="nameSearch" placeholder="Search Pokémon…" autocomplete="off" />
       <div class="legend-rarity" role="group" aria-label="Filter by rarity">
         <button type="button" class="chip" data-rarity-group="holo" aria-pressed="false">
-          <i class="pip holo" aria-hidden="true"></i> Holo Rare (gold + foil glow)
+          <i class="pip holo" aria-hidden="true"></i> <span class="chip-long">Holo Rare (gold + foil glow)</span><span class="chip-short">Holo</span>
         </button>
         <button type="button" class="chip" data-rarity-group="rare" aria-pressed="false">
-          <i class="pip rare" aria-hidden="true"></i> Rare (silver)
+          <i class="pip rare" aria-hidden="true"></i> <span class="chip-long">Rare (silver)</span><span class="chip-short">Rare</span>
         </button>
         <button type="button" class="chip" data-rarity-group="common" aria-pressed="false">
-          <i class="pip common" aria-hidden="true"></i> Common / Uncommon / Energy
+          <i class="pip common" aria-hidden="true"></i> <span class="chip-long">Common / Uncommon / Energy</span><span class="chip-short">C / U / E</span>
         </button>
       </div>
       <div class="nav-density">
