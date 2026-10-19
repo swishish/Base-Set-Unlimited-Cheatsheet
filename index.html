@@ -626,6 +626,7 @@
   }
   .prices .sep { color: #b7b1a6; font-weight: 700; }
   .prices .val.a { color: var(--a); font-size: 14px; font-weight: 900; }
+  .prices .val.a.is-gap { font-size: 13px; font-weight: 800; }
   .prices .val.b { color: var(--b); font-size: 14px; font-weight: 900; }
   .prices .val.p { color: var(--psa); font-size: 13px; font-weight: 900; }
   .links {
@@ -722,7 +723,7 @@
           <span class="poke-mark" aria-hidden="true"></span>
           <span class="home-title-text">Base Set Unlimited</span>
         </a>
-        <span class="pill">v1.1.0</span>
+        <span class="pill">v1.2.0</span>
       </div>
       <nav class="header-nav" aria-label="Box EV pages">
         <a class="nav-btn" href="https://swishish.github.io/Pokemon-Box-EV/calc.html">開盒 EV</a>
@@ -775,9 +776,9 @@
   <header class="page-head">
     <div>
       <h1>Base Set Unlimited · Card List</h1>
-      <div class="sub">102 cards · one-page scroll · FX USD×7.85 · 2026-10-12</div>
+      <div class="sub">102 cards · one-page scroll · FX USD×7.85 · <span id="nmAsOf">NM as-of 2026-10-12</span></div>
     </div>
-    <div class="badge">v1.1.0 · FULL 102</div>
+    <div class="badge">v1.2.0 · FULL 102</div>
   </header>
 <p class="empty-msg" id="emptyMsg" hidden>No cards match that name / rarity.</p>
   <div class="grid" id="grid">
@@ -3436,8 +3437,8 @@
 
   <footer>
     SCOPE: English Base Set Unlimited only (no 1st Edition stamp / not Shadowless). Full set 102 incl. Energy.<br/>
-    A = TCGPlayer Near Mint market. B = real LP comps when available (else —). PSA 10 = PriceCharting (or pokemonpricing Aug-2026 fill for thin PC pages).<br/>
-    FX USD × 7.85 → HKD. Snapshot 2026-10-12. Grid size + Owned boxes persist in this browser (localStorage). Name search and rarity chips filter the grid in place. Self-contained HTML (embedded thumbs).
+    A = TCGPlayer Near Mint market (Holo/Rare live from Box EV JSON; snapshot if fetch fails). B = real LP comps when available (else —). PSA 10 = PriceCharting (or pokemonpricing Aug-2026 fill for thin PC pages).<br/>
+    FX USD × 7.85 → HKD. NM as-of follows the JSON date (header). LP / PSA 10 stay on the 2026-10-12 snapshot. Machamp #008 NM stays 缺口 when usd is missing — never invented. Grid size + Owned boxes persist in this browser (localStorage). Name search and rarity chips filter the grid in place. Self-contained HTML (embedded thumbs).
   </footer>
   </div>
 
@@ -3448,6 +3449,10 @@
   var COL_KEY = 'bsu_cheat_cols';
   var OWN_KEY = 'bsu_cheat_owned';
   var COMMON_GROUP = { common: 1, uncommon: 1, energy: 1 };
+  var FX_USD_HKD = 7.85;
+  var SNAP_ASOF = '2026-10-12';
+  var GAP_LABEL = '缺口';
+  var NM_JSON_URL = 'https://swishish.github.io/Pokemon-Box-EV/data/market-vintage/cheatsheet.json';
   var root = document.documentElement;
   var grid = document.getElementById('grid');
   var seg = document.getElementById('colSeg');
@@ -3572,6 +3577,84 @@
     var card = cb.closest('.card');
     if (card) card.classList.toggle('is-owned', cb.checked);
   });
+
+  function padCardNumber(num) {
+    var n = String(num == null ? '' : num);
+    while (n.length < 3) n = '0' + n;
+    return n + '/102';
+  }
+
+  function formatHkdFromUsd(usd) {
+    return Math.round(Number(usd) * FX_USD_HKD).toLocaleString('en-US');
+  }
+
+  function numericUsd(value) {
+    if (value == null || value === '') return null;
+    var n = Number(value);
+    return isFinite(n) ? n : null;
+  }
+
+  function setNmAsOf(dateStr) {
+    var el = document.getElementById('nmAsOf');
+    if (el && dateStr) el.textContent = 'NM as-of ' + dateStr;
+  }
+
+  function applyLiveNm(data) {
+    var printing = data && data.printings && data.printings['base-unlimited'];
+    if (!printing || !printing.cards) return false;
+    var byNumber = {};
+    for (var i = 0; i < printing.cards.length; i++) {
+      var row = printing.cards[i];
+      if (row && row.number) byNumber[row.number] = row;
+    }
+    var gapNumbers = {};
+    var gaps = data.gaps || [];
+    for (var g = 0; g < gaps.length; g++) {
+      if (gaps[g] && gaps[g].number) gapNumbers[gaps[g].number] = true;
+    }
+    Array.prototype.forEach.call(grid.querySelectorAll('.card'), function (card) {
+      var rarity = card.getAttribute('data-rarity');
+      if (rarity !== 'holo' && rarity !== 'rare') return;
+      var number = padCardNumber(card.getAttribute('data-num'));
+      var nmEl = card.querySelector('.prices .val.a');
+      if (!nmEl) return;
+      var live = byNumber[number];
+      var usd = live ? numericUsd(live.usd) : null;
+      if (usd != null) {
+        nmEl.textContent = formatHkdFromUsd(usd);
+        nmEl.classList.remove('is-gap');
+        nmEl.removeAttribute('title');
+        return;
+      }
+      if (gapNumbers[number] || live || number === '008/102') {
+        nmEl.textContent = GAP_LABEL;
+        nmEl.classList.add('is-gap');
+        nmEl.setAttribute('title', 'No TCGPlayer market print — do not invent a price');
+      }
+    });
+    setNmAsOf(printing.asOfDate || data.asOfDate || SNAP_ASOF);
+    return true;
+  }
+
+  function loadLiveNm() {
+    var ctrl = typeof AbortController !== 'undefined' ? new AbortController() : null;
+    var timer = null;
+    if (ctrl) timer = setTimeout(function () { ctrl.abort(); }, 8000);
+    var opts = { cache: 'no-cache' };
+    if (ctrl) opts.signal = ctrl.signal;
+    fetch(NM_JSON_URL, opts).then(function (res) {
+      if (!res.ok) throw new Error('nm http ' + res.status);
+      return res.json();
+    }).then(function (payload) {
+      applyLiveNm(payload);
+    }).catch(function () {
+      setNmAsOf(SNAP_ASOF);
+    }).then(function () {
+      if (timer) clearTimeout(timer);
+    });
+  }
+
+  loadLiveNm();
 
   if (searchInput) {
     searchInput.addEventListener('input', applyFilters);
